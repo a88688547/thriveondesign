@@ -51,3 +51,79 @@ img {
     line-height: 54px;
   }
 }
+
+#aboutUs {
+  height: auto;
+}
+
+@media screen and (min-width: 767px) {
+  #aboutUs {
+    height: calc(100vh - 68px);
+  }
+}
+
+/* --------------- */
+
+.hamburger {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 50px; /* 調整按鈕寬度 */
+  height: 50px; /* 調整按鈕高度 */
+}
+
+.hamburger span {
+  display: block;
+  width: 100%; /* 寬度與按鈕相同 */
+  height: 5px; /* 調整橫線的高度以適應更大的按鈕 */
+  background-color: #333;
+  transition: all 0.3s ease;
+  border-radius: 5px; /* 讓線條兩端圓潤 */
+}
+
+/* 漢堡按鈕展開後的 X 形狀 */
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(7px, 7px); /* 調整旋轉位移以匹配新大小 */
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0; /* 隱藏中間橫線 */
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px); /* 調整旋轉位移以匹配新大小 */
+}
+
+/* -- */
+/* HTML: <div class="loader"></div> */
+.loader {
+  font-weight: bold;
+  font-family: monospace;
+  font-size: 30px;
+  display: inline-grid;
+  overflow: hidden;
+}
+.loader:before,
+.loader:after {
+  content: 'Loading...';
+  grid-area: 1/1;
+  clip-path: inset(0 -200% 50%);
+  text-shadow: -10ch 0 0;
+  animation: l13 2s infinite;
+}
+.loader:after {
+  clip-path: inset(50% -200% 0%);
+  text-shadow: 10ch 0 0;
+  --s: -1;
+  animation-delay: 1s;
+}
+@keyframes l13 {
+  25%,
+  100% {
+    transform: translateX(calc(var(--s, 1) * 100%));
+  }
+}

@@ -1,13 +1,86 @@
 import Header from '../component/Header'
 import Footer from '../component/Footer'
+import { useEffect, useState } from 'react'
+
+const initData = {
+  name: '',
+  company: '',
+  telephone: '',
+  email: '',
+  where: '',
+  goals: '',
+}
 
 const HomePage = () => {
+  const [formData, setFormData] = useState(initData)
+
+  const onChange = (key, value) => {
+    setFormData({
+      ...formData,
+      [key]: value,
+    })
+  }
+
+  const handleSubmit = async () => {
+    const body = document.querySelector('body')
+    body.style.overflow = 'hidden'
+    setIsLoading(true)
+    const response = await fetch(
+      'https://script.google.com/macros/s/AKfycbxwvuk9GnoWfEr4p4RVgQaQFKylmK-x4JLS0qlnfQTcPRkrk-im9auOVmlRypnC6Kh4Bg/exec',
+      {
+        method: 'POST',
+        mode: 'no-cors', // 設置 CORS 模式
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      }
+    ).finally(() => {
+      // const result = await response.json()
+      // console.log('Success:', result)
+      body.style.overflow = 'auto'
+      setIsLoading(false)
+      alert('Information has been submitted successfully, we will contact you as soon as possible')
+      setFormData(initData)
+    })
+
+    // try {
+    //   const response = await fetch(
+    //     'https://script.google.com/macros/s/AKfycbxwvuk9GnoWfEr4p4RVgQaQFKylmK-x4JLS0qlnfQTcPRkrk-im9auOVmlRypnC6Kh4Bg/exec',
+    //     {
+    //       method: 'POST',
+    //       mode: 'no-cors', // 設置 CORS 模式
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify(formData),
+    //     }
+    //   )
+
+    //   const result = await response.json()
+    //   console.log('Success:', result)
+    //   alert('Information has been submitted successfully, we will contact you as soon as possible')
+    //   setFormData(initData)
+    // } catch (error) {
+    //   console.error('Error:', error)
+    //   alert('There were some wrong, please try again.')
+    // }
+  }
+
+  const [isLoading, setIsLoading] = useState(false)
+
   return (
-    <div>
+    <div className=" relative">
+      {isLoading && (
+        <div className=" fixed w-full h-[100vh] bg-black-5/10 top-0 left-0 flex justify-center items-center z-10">
+          <div class="text-white loader"></div>
+        </div>
+      )}
+
       <Header />
 
       {/* 影片 */}
-      <div
+      {/* <div
         className="h-[90vh]"
         style={{
           textAlign: 'center',
@@ -58,25 +131,69 @@ const HomePage = () => {
             <div className="title_1">Ecommerce Growth Specialists</div>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      {/* 品牌一屏 */}
-      <div className="h-[370px] w-full bg-white flex justify-center items-center">
-        <div className="">放東西</div>
+      {/* 關於我們 */}
+      <div
+        id={'aboutUs'}
+        className="w-full bg-white flex justify-center items-center"
+        style={{
+          backgroundImage: "url('/AboutUs.jpg')",
+        }}
+      >
+        <div className="max-w-[1200px]">
+          <div className="p-10 md:p-20 ld:p-40 bg-white opacity-90 text-lg tracking-wide">
+            <div className="font-bold text-4xl mb-6">ABOUT US</div>
+            Thrive On Design is a leading international e-commerce platform dedicated to seamlessly connecting global
+            brands with consumers. We offer a diverse range of products, from fashion and beauty to technology,
+            providing a comprehensive shopping experience. Founded with the mission to integrate global markets and
+            enhance direct communication between brands and consumers, we specialize in building tailored e-commerce
+            platforms for brands. By partnering closely with them, we create strategies that maximize mutual benefits.
+            With a core focus on sustainability, we strive to promote environmental responsibility and reduce ecological
+            impact. Collaborating with top brands worldwide, we use innovative technology and exceptional service to
+            expand global markets while benefiting the environment, ultimately delivering a superior quality of life for
+            our customers.
+          </div>
+        </div>
       </div>
 
       {/* 滾動視差 - 滿屏 */}
-      <div>
+      <div id="service">
         <div
           className="pic1 fullImageBox relative flex justify-center items-center"
           style={{
-            backgroundImage:
-              "url('https://www.smartebusiness.co.uk/wp-content/uploads/2016/05/agacookshop-featured-634x3512.jpg')",
+            backgroundImage: "url('/service_4.jpg')",
           }}
         >
           <div className="flex flex-col justify-center items-center text-center">
-            <div className="title_1 mb-[16px]">Aga Cookshop</div>
-            <div className=" text-base mb-[26px]">Luxurious Cookware brand AGA's website and marketing management</div>
+            <div className="mb-20 text-red-700 font-bold title_1 absolute top-[10%]">OUR SERVICE</div>
+            <div className="title_1 mb-[16px]">E-commerce Website Development</div>
+            <div className=" text-base mb-[26px]">
+              We build customized ecommerce websites that optimize user experience, streamline sales processes, and
+              support secure online transactions.
+            </div>
+            <div
+              className="rounded cursor-pointer hover:opacity-80 font-bold text-sm py-4 px-6"
+              style={{
+                border: '1px solid #fff',
+              }}
+            >
+              View Case Study
+            </div>
+          </div>
+        </div>
+        <div
+          className="pic1 fullImageBox relative flex justify-center items-center"
+          style={{
+            backgroundImage: "url('/service_1.jpg')",
+          }}
+        >
+          <div className="flex flex-col justify-center items-center text-center">
+            <div className="title_1 mb-[16px]">Global Market Marketing</div>
+            <div className=" text-base mb-[26px]">
+              We provide comprehensive global market marketing strategies to expand your brand's reach and increase
+              international sales.
+            </div>
             <div
               className="rounded cursor-pointer hover:opacity-80 font-bold text-sm py-4 px-6"
               style={{
@@ -90,13 +207,14 @@ const HomePage = () => {
         <div
           className="pic2 fullImageBox relative flex justify-center items-center"
           style={{
-            backgroundImage:
-              "url('https://www.smartebusiness.co.uk/wp-content/uploads/2016/05/shutterstock_324835502.jpg')",
+            backgroundImage: "url('/service_2.jpg')",
           }}
         >
           <div className="flex flex-col justify-center items-center text-center">
-            <div className="title_1 mb-[16px]">Aga Cookshop</div>
-            <div className=" text-base mb-[26px]">Luxurious Cookware brand AGA's website and marketing management</div>
+            <div className="title_1 mb-[16px]">International Brand Collaboration</div>
+            <div className=" text-base mb-[26px]">
+              We collaborate with international brands to enhance market influence and drive global performance growth.
+            </div>
             <div
               className="rounded cursor-pointer hover:opacity-80 font-bold text-sm py-4 px-6"
               style={{
@@ -110,13 +228,15 @@ const HomePage = () => {
         <div
           className="pic3 fullImageBox relative flex justify-center items-center"
           style={{
-            backgroundImage:
-              "url('https://www.smartebusiness.co.uk/wp-content/uploads/2016/05/adeolu-eletu-11779-unsplash.jpg')",
+            backgroundImage: "url('/service_3.jpg')",
           }}
         >
           <div className="flex flex-col justify-center items-center text-center">
-            <div className="title_1 mb-[16px]">Aga Cookshop</div>
-            <div className=" text-base mb-[26px]">Luxurious Cookware brand AGA's website and marketing management</div>
+            <div className="title_1 mb-[16px]">Business Management Consulting</div>
+            <div className=" text-base mb-[26px]">
+              We provide consulting services to enterprises to improve their performance or in any how to assist in
+              achieving organizational objectives.
+            </div>
             <div
               className="rounded cursor-pointer hover:opacity-80 font-bold text-sm py-4 px-6"
               style={{
@@ -127,11 +247,11 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-        <div
+        {/* <div
           className="pic4 fullImageBox relative flex justify-center items-center"
           style={{
             backgroundImage:
-              "url('https://www.smartebusiness.co.uk/wp-content/uploads/2016/05/michael-browning-246513-unsplash.jpg')",
+            "url('/src/assets/images/service_3.jpg')",
           }}
         >
           <div className="flex flex-col justify-center items-center text-center">
@@ -186,137 +306,101 @@ const HomePage = () => {
               View Case Study
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
 
-      {/* 文章內容  */}
-      <div className="w-full bg-[#f5f5f5] pt-[70px] pb-[50px] lg:pt-[100px] lg:pb-[80px]">
-        <div className="w-full max-w-[1200px] mx-auto px-[15px]">
-          <div className="mb-[40px] text-[17px] text-center">
-            <div className="tracking-[2px] uppercase text-[#363636]">
-              All the latest news, opinion and updates from smartebusiness & Magento
+      {/* 合作廠商  */}
+      <div className="w-full py-[30px] lg:py-[60px] bg-white">
+        <div className="w-full max-w-[1200px] mx-auto px-4">
+          <div className="text-[#363636] text-center">
+            <div className="text-2xl uppercase font-bold mb-[20px]">We work with B2B & B2C Clients</div>
+            <div className="text-xl uppercase tracking-wide">
+              Find out more about how we help retailers grow in our case studies
             </div>
-            <div className="text-[24px] font-bold">Smartebusiness Blog</div>
           </div>
-
-          <div className="flex flex-col md:flex-row justify-center md:justify-between items-center">
-            <div
-              className="w-full md:w-[31.8%] mb-[20px] md:mb-0"
-              style={{
-                background: '#fff',
-                border: 'solid 1px #cfcfcf',
-                padding: '22px',
-                borderRadius: '10px',
-              }}
-            >
-              <div className="mb-[20px]">
-                <img
-                  src="https://www.smartebusiness.co.uk/wp-content/uploads/2012/06/austin-distel-wD1LRb9OeEo-unsplash-330x230.jpg"
-                  alt="img_11"
-                ></img>
-              </div>
-              <div>
-                <div className="mb-[10px] text-base">10 Tips For Increasing Your Magento Sales</div>
-                <div className="mb-[12px] text-xs">
-                  I got bumped up to First Class on my trip and I am sitting here with Free Wi Fi I thought I would
-                  write a…
-                </div>
-              </div>
+          <div className="w-full flex flex-col md:flex-row justify-center items-center gap-[80px] mt-[80px]">
+            <div className="w-full max-w-[200px] md:w-1/3 mb-[20px] mx-auto md:mb-0 md:mx-0">
+              <img src="/client_1.png"></img>
             </div>
-            <div
-              className="w-full md:w-[31.8%] mb-[20px] md:mb-0"
-              style={{
-                background: '#fff',
-                border: 'solid 1px #cfcfcf',
-                padding: '22px',
-                borderRadius: '10px',
-              }}
-            >
-              <div className="mb-[20px]">
-                <img
-                  src="https://www.smartebusiness.co.uk/wp-content/uploads/2012/06/austin-distel-wD1LRb9OeEo-unsplash-330x230.jpg"
-                  alt="img_11"
-                ></img>
-              </div>
-              <div>
-                <div className="mb-[10px] text-base">10 Tips For Increasing Your Magento Sales</div>
-                <div className="mb-[12px] text-xs">
-                  I got bumped up to First Class on my trip and I am sitting here with Free Wi Fi I thought I would
-                  write a…
-                </div>
-              </div>
+            <div className="w-full max-w-[200px] md:w-1/3  mb-[20px] mx-auto md:mb-0 md:mx-0">
+              <img src="/client_2.png"></img>
             </div>
-            <div
-              className="w-full md:w-[31.8%] mb-[20px] md:mb-0"
-              style={{
-                background: '#fff',
-                border: 'solid 1px #cfcfcf',
-                padding: '22px',
-                borderRadius: '10px',
-              }}
-            >
-              <div className="mb-[20px]">
-                <img
-                  src="https://www.smartebusiness.co.uk/wp-content/uploads/2012/06/austin-distel-wD1LRb9OeEo-unsplash-330x230.jpg"
-                  alt="img_11"
-                ></img>
-              </div>
-              <div>
-                <div className="mb-[10px] text-base">10 Tips For Increasing Your Magento Sales</div>
-                <div className="mb-[12px] text-xs">
-                  I got bumped up to First Class on my trip and I am sitting here with Free Wi Fi I thought I would
-                  write a…
-                </div>
-              </div>
+            <div className="w-full max-w-[200px] md:w-1/3  mx-auto md:mx-0">
+              <img src="/client_3.png"></img>
             </div>
           </div>
         </div>
       </div>
 
       {/* 聯絡我們 */}
-      <div className="w-full max-w-[660px] mx-auto">
-        <div className="py-[20px] text-2xl md:text-3xl mb-[11px] md:mb-[14px] text-center text-[#363636]">
+      <div id="contactUs" className="w-full max-w-[660px] mx-auto">
+        {/* <div className="py-[20px] text-2xl md:text-3xl mb-[11px] md:mb-[14px] text-center text-[#363636]">
           Behind the scenes at Smartebusiness
-        </div>
+        </div> */}
         <div className="py-[50px] px-[15px] md:px-[20px]">
           <div className="text-center text-2xl md:text-3xl mb-[30px] text-[#363636]">
-            <div>Time to explore your Ecommerce Growth?</div>
-            <div>Just fill in the form below and we'll be right with you.</div>
+            {/* <div>Time to explore your Ecommerce Growth?</div> */}
+            <div>Fill in the form below and we'll be right with you</div>
           </div>
           <div>
             <div className="flex flex-col md:flex-row md:gap-4 justify-center items-center">
               <div className="w-full md:w-1/2 pb-[20px]">
                 <div>Name</div>
-                <input className="w-full" />
+                <input value={formData?.name} onChange={(e) => onChange('name', e?.target?.value)} className="w-full" />
               </div>
               <div className="w-full md:w-1/2 pb-[20px]">
                 <div>Company</div>
-                <input className="w-full" />
+                <input
+                  value={formData?.company}
+                  onChange={(e) => onChange('company', e?.target?.value)}
+                  className="w-full"
+                />
               </div>
             </div>
             <div className="flex flex-col md:flex-row md:gap-4 justify-center items-center">
               <div className="w-full md:w-1/2 pb-[20px]">
                 <div>Telephone*</div>
-                <input className="w-full" />
+                <input
+                  value={formData?.telephone}
+                  onChange={(e) => onChange('telephone', e?.target?.value)}
+                  className="w-full"
+                />
               </div>
               <div className="w-full md:w-1/2 pb-[20px]">
                 <div>Email*</div>
-                <input className="w-full" />
+                <input
+                  value={formData?.email}
+                  onChange={(e) => onChange('email', e?.target?.value)}
+                  className="w-full"
+                />
               </div>
             </div>
             <div className="flex flex-col md:flex-row md:gap-4 justify-center items-center">
               <div className="w-full pb-[20px]">
                 <div>Where did you hear about us?</div>
-                <input className="w-full" />
+                <input
+                  value={formData?.where}
+                  onChange={(e) => onChange('where', e?.target?.value)}
+                  className="w-full"
+                />
               </div>
             </div>
             <div className="flex flex-col md:flex-row md:gap-4 justify-center items-center">
               <div className="w-full pb-[20px]">
-                <div>Where did you hear about us?</div>
-                <textarea className="w-full" />
+                <div>Tell us about your eCommerce goals</div>
+                <textarea
+                  value={formData?.goals}
+                  onChange={(e) => onChange('goals', e?.target?.value)}
+                  className="w-full"
+                />
               </div>
             </div>
-            <div className="py-4 bg-red-500 text-white text-center cursor-pointer hover:opacity-80">SEND</div>
+            <div
+              className="py-4 bg-red-500 text-white text-center cursor-pointer hover:opacity-80"
+              onClick={handleSubmit}
+            >
+              SEND
+            </div>
           </div>
         </div>
       </div>
